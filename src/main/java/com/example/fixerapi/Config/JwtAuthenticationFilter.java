@@ -1,5 +1,6 @@
 package com.example.fixerapi.Config;
 
+import com.example.fixerapi.Repositories.TokenRepo;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,6 +23,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
+    private final TokenRepo tokenRepo;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -39,7 +41,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         userEmail = jwtService.extractUsername(JwToken);
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null){
             UserDetails user = this.userDetailsService.loadUserByUsername(userEmail);
-            if (jwtService.isTokenValid(JwToken , user)){
+            var isTokenValid = tokenRepo.findByToken(JwToken)
+                    .map(t -> !t.isExpired() && !t.isRevoked())
+                    .orElse(false);
+            if (jwtService.isTokenValid(JwToken , user) && isTokenValid){
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         user,
                         null,
