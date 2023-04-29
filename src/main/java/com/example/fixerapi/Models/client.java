@@ -22,7 +22,7 @@ public class client extends User{
     String imagePath;
     String City;
     String tel;
-    @OneToMany(mappedBy = "Client")
+    @OneToMany(mappedBy = "cliant")
     List<jobOffer> Offers;
     @OneToMany(mappedBy = "client")
     List<report>Reports;

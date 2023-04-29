@@ -1,5 +1,8 @@
 package com.example.fixerapi.Models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,7 +22,9 @@ public class profession {
 
     String name;
     String Description;
-    @ManyToMany
-    List<salle7>Salle7es;
+    @JsonIgnore
+    @JsonBackReference
+    @OneToMany(mappedBy = "profession")
+    List<salle7> Salle7es;
 
 }

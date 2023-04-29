@@ -4,7 +4,6 @@ import com.example.fixerapi.Models.client;
 import com.example.fixerapi.Repositories.clientRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +17,7 @@ public class ServiceClient implements IServiceClient{
 
     @Override
     public client createclient(client p) {
-        return null;
+        return cr.save(p);
     }
 
     @Override

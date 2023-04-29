@@ -1,6 +1,7 @@
 package com.example.fixerapi.Models;
 
 import ch.qos.logback.core.net.server.Client;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,9 +20,11 @@ public class jobOffer {
     String Description;
     String Address;
     String Price;
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
-    client Client;
+    client cliant;
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
-    salle7 Salle7;
+    salle7 salla7;
 
 }

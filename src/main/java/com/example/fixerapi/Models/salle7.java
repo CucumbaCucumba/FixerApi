@@ -1,5 +1,7 @@
 package com.example.fixerapi.Models;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,10 +23,11 @@ public class salle7 extends User {
     String imagePath;
     String City;
     String tel;
-    @ManyToMany
-    List<profession> Professions;
+    @JsonManagedReference
+    @ManyToOne(fetch = FetchType.EAGER)
+    profession profession;
     double Rate;
-    @OneToMany(mappedBy = "Salle7")
+    @OneToMany(mappedBy = "salla7")
     List<jobOffer> Offers;
 
     @OneToMany(mappedBy = "salle7")

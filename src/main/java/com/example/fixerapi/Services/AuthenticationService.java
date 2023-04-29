@@ -7,7 +7,9 @@ import com.example.fixerapi.Controllors.RegisterRequest;
 import com.example.fixerapi.Models.*;
 import com.example.fixerapi.Repositories.TokenRepo;
 import com.example.fixerapi.Repositories.UserRepository;
+import com.example.fixerapi.Repositories.clientRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,22 +19,24 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthenticationService {
 
+    private final clientRepo clientRepo;
     private final UserRepository userRepository;
     private final TokenRepo tokenRepo;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwts;
     private final AuthenticationManager authenticationManager;
 
+
+
     public AuthenticationResponse register(RegisterRequest request) {
-        var user = User.builder()
-                .firstname(request.getFirstname())
-                .lastname(request.getLastname())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.CLIENT)
-                .build();
-        var savedUser = userRepository.save(user);
-        var jwtToken = jwts.generateToken(user);
+        client c = new client();
+        c.setEmail(request.getEmail());
+        c.setFirstname(request.getFirstname());
+        c.setLastname(request.getLastname());
+        c.setPassword(passwordEncoder.encode(request.getPassword()));
+        c.setRole(Role.CLIENT);
+        var savedUser = clientRepo.save(c);
+        var jwtToken = jwts.generateToken(c);
         saveUserToken(savedUser, jwtToken);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
